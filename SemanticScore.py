@@ -1,4 +1,15 @@
-#pip install sentence-transformers pandas
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+pip install sentence-transformers pandas
+
+
+# In[2]:
+
+
 import pandas as pd
 from sentence_transformers import SentenceTransformer, util
 
@@ -39,10 +50,47 @@ def compare_answers_from_csv(input_csv_path, output_csv_path,
     print(f"✅ Saved comparison results to: {output_csv_path}")
     return df
 
-# 📦 Example Usage
+
+# In[5]:
+
+
+#changing the encoding of input file
+#run this only if required
+import chardet
+
+file_path = r'D:\UTAustin\AI_in_healthcare\Summer_2025_Manasa Koppula\Project\GenerateAnswers.csv'
+# Read a portion of the file to detect encoding
+with open(file_path, 'rb') as f:
+    raw_data = f.read()
+    result = chardet.detect(raw_data)
+
+detected_encoding = result['encoding']
+print(f"Detected encoding: {detected_encoding}") 
+
+input_path = file_path
+output_path = r'D:\UTAustin\AI_in_healthcare\Summer_2025_Manasa Koppula\Project\gptGeneratedAnswers.csv'
+
+# Read with detected encoding, write as UTF-8
+with open(input_path, 'r', encoding=detected_encoding, errors='ignore') as source_file:
+    content = source_file.read()
+
+with open(output_path, 'w', encoding='utf-8') as target_file:
+    target_file.write(content)
+
+
+# In[7]:
+
+
 if __name__ == "__main__":
-    input_csv = "chatbot_outputs.csv"       # Input file should have columns like: "GroundTruth", "GeneratedAnswer"
-    output_csv = "semantic_similarity_results.csv"
+    input_csv = r'D:\UTAustin\AI_in_healthcare\Summer_2025_Manasa Koppula\Project\gptGeneratedAnswers.csv'  # Input file should have columns like: "GroundTruth", "GeneratedAnswer"
+    output_csv = r'D:\UTAustin\AI_in_healthcare\Summer_2025_Manasa Koppula\Project\semantic_similarity_results.csv'
 
     df_result = compare_answers_from_csv(input_csv, output_csv)
     print(df_result.head())
+
+
+# In[ ]:
+
+
+
+
